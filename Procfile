@@ -1,1 +1,1 @@
-bot: python3.9 bot/main.py
+web: python3.9 bot/main.py
