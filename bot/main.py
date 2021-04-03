@@ -27,8 +27,6 @@ elif mode == "prod":
                               port=PORT,
                               url_path=os.getenv("TG_BOT_TOKEN"),
                               webhook_url = f"https://{os.getenv('HEROKU_APP_NAME')}.herokuapp.com/{os.getenv('TG_BOT_TOKEN')}")
-        updater.idle()
-        # updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(os.getenv("HEROKU_APP_NAME"), os.getenv("TG_BOT_TOKEN")))
 else:
     logging.error("No MODE Specified. Please specify mode as one of ['dev', 'prod']")
     sys.exit(1)
