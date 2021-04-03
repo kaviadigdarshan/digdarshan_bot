@@ -1,4 +1,6 @@
+import os
 import re
+import sys
 import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler
@@ -11,11 +13,24 @@ from files import chosen_file_converter, invoke_files
 from dictionary import chosen_dict, invoke_dictionary, invoke_syn_ant_callback, show_next_prev_definition
 from general import print_sender_info, DEV_CHAT_ID, DICT_TYPING_REPLY, DICT_TYPING_CHOICE, DICT_SELECTING_DEF, TRANS_TYPING_REPLY, FILES_TYPING_CHOICE, FILES_TYPING_REPLY, COMMANDS
 
-updater = Updater(config.TG_BOT_TOKEN)
-dispatcher = updater.dispatcher
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
+
+mode = os.getenv("MODE").lower()
+if mode == "dev":
+    def run(updater):
+        updater.start_polling()
+        updater.idle()
+elif mode == "prod":
+    def run(updater):
+        PORT = int(os.environ.get("PORT", "8443"))
+        updater.start_webhook(listen="0.0.0.0",
+                              port=PORT,
+                              url_path=config.TG_BOT_TOKEN)
+        updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(config.HEROKU_APP_NAME, config.TG_BOT_TOKEN))
+else:
+    logging.error("No MODE Specified. Please specify mode as one of ['dev', 'prod']")
+    sys.exit(1)
 
 def cancel(bot, update):
 	update.message.reply_text('')
@@ -120,12 +135,16 @@ files_handler = ConversationHandler(
     fallbacks=[CommandHandler('cancel', cancel)],
     allow_reentry=True
 )
-dispatcher.add_handler(quote_handler)
-dispatcher.add_handler(dictionary_handler)
-dispatcher.add_handler(transliterate_handler)
-dispatcher.add_handler(files_handler)
-dispatcher.add_handler(start_handler)
-dispatcher.add_error_handler(error_handler)
 
-updater.start_polling()
-updater.idle()
+if __name__ == '__main__':
+    updater = Updater(config.TG_BOT_TOKEN)
+    dispatcher = updater.dispatcher
+
+    dispatcher.add_handler(quote_handler)
+    dispatcher.add_handler(dictionary_handler)
+    dispatcher.add_handler(transliterate_handler)
+    dispatcher.add_handler(files_handler)
+    dispatcher.add_handler(start_handler)
+    dispatcher.add_error_handler(error_handler)
+
+    run(updater)
