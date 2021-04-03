@@ -1,12 +1,12 @@
+import os
 import re
 import ast
-import config
 import http.client
 import detectlanguage
 from telegram.ext import ConversationHandler
 from general import print_sender_info, TRANS_TYPING_REPLY, PUNCTUATION_LITERALS
  
-detectlanguage.configuration.api_key = config.DETECTLANGUAGE_API_KEY
+detectlanguage.configuration.api_key = os.getenv("DETECTLANGUAGE_API_KEY")
 detectlanguage.configuration.secure = True
 
 lang = 'hi-t-i0-und'

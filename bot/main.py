@@ -5,7 +5,6 @@ import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler
 
-import config
 from quotes import cmd_quote
 from error_handler import error_handler
 from transliterate import invoke_transliterate
@@ -26,8 +25,8 @@ elif mode == "prod":
         PORT = int(os.environ.get("PORT", "8443"))
         updater.start_webhook(listen="0.0.0.0",
                               port=PORT,
-                              url_path=config.TG_BOT_TOKEN)
-        updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(config.HEROKU_APP_NAME, config.TG_BOT_TOKEN))
+                              url_path=os.getenv("TG_BOT_TOKEN"))
+        updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(os.getenv("HEROKU_APP_NAME"), os.getenv("TG_BOT_TOKEN")))
 else:
     logging.error("No MODE Specified. Please specify mode as one of ['dev', 'prod']")
     sys.exit(1)
@@ -137,7 +136,7 @@ files_handler = ConversationHandler(
 )
 
 if __name__ == '__main__':
-    updater = Updater(config.TG_BOT_TOKEN)
+    updater = Updater(os.getenv("TG_BOT_TOKEN"))
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(quote_handler)

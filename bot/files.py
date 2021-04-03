@@ -1,17 +1,17 @@
+import os
 import time
 import requests
 import tempfile
 import logging
 import convertapi
-import config
 from requests.auth import HTTPBasicAuth
 from telegram import ParseMode
 from telegram.ext import ConversationHandler
 from telegram.utils import helpers
 from general import print_sender_info, print_sender_choice_and_info,FILES_TYPING_CHOICE, FILES_TYPING_REPLY
 
-convertapi.api_secret = config.CONVERTAPI_SECRET
-_zamzar_api_key = config.ZAMZAR_API_KEY
+convertapi.api_secret = os.getenv("CONVERTAPI_SECRET")
+_zamzar_api_key = os.getenv("ZAMZAR_API_KEY")
 _zamzar_base_url = {"zamzar-sb": "https://api.zamzar.com/v1", "zamzar-live": "https://sandbox.zamzar.com/v1"}
 _preferred_converter = {"pdf-to-docx": "zamzar-live", "pdf-to-csv": "zamzar-live"}
 

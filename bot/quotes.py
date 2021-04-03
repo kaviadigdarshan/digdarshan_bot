@@ -1,13 +1,13 @@
+import os
 import string
-import config
 from random import randrange
 from cloudinary import config as cloudinary_config
 from cloudinary import Search
 
 cloudinary_config(
-  cloud_name = config.CLOUDINARY_USER,  
-  api_key = config.CLOUDINARY_API_KEY,  
-  api_secret = config.CLOUDINARY_API_SECRET  
+  cloud_name = os.getenv("CLOUDINARY_USER"),  
+  api_key = os.getenv("CLOUDINARY_API_KEY"),  
+  api_secret = os.getenv("CLOUDINARY_API_SECRET")
 )
 
 def get_quote_image():

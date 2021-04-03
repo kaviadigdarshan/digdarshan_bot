@@ -1,5 +1,5 @@
+import os
 import re
-import config
 import requests
 import detectlanguage
 from transliterate import get_hindi_literals
@@ -8,7 +8,7 @@ from telegram.ext import ConversationHandler
 from telegram.utils import helpers
 from general import print_sender_info, print_sender_choice_and_info, NUMBER_EMOJI_MAP, DICT_TYPING_REPLY, DICT_TYPING_CHOICE, DICT_SELECTING_DEF, PUNCTUATION_LITERALS, MEDIC_DICT_TAGS
 
-MEDICAL_DICT_KEY = config.MEDICAL_DICT_API_KEY
+MEDICAL_DICT_KEY = os.getenv("MEDICAL_DICT_API_KEY")
 
 def detect_hindi_in_msg(word):
     resp = detectlanguage.detect(word)

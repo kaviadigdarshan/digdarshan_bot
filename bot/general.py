@@ -1,7 +1,7 @@
-import config
+import os
 import logging
 
-DEV_CHAT_ID  = config.DEVELOPER_CHAT_ID
+DEV_CHAT_ID  = os.getenv("DEVELOPER_CHAT_ID")
 PUNCTUATION_LITERALS  = ['?', '!', '&', '>', '|', '\\', '$', '+', '@', '-', '`', '/', ':', '_', '%', ';', '{', ')', '^', '.', '[', '"', '}', '~', ']', '<', '#', '(', '=', '*', ',', "'"]
 NUMBER_EMOJI_MAP = {"0": "0️⃣", "1": "1️⃣", "2": "2️⃣", "3": "3️⃣", "4": "4️⃣","5": "5️⃣", "6": "6️⃣","7": "7️⃣","8": "8️⃣","9": "9️⃣"}
 DICT_TYPING_REPLY, DICT_TYPING_CHOICE, DICT_SELECTING_DEF = range(3)
