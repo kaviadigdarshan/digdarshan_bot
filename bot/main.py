@@ -23,8 +23,9 @@ if mode == "dev":
 elif mode == "prod":
     def run(updater):
         # PORT = int(os.environ.get("PORT", "8443"))
+        PORT = 8443
         updater.start_webhook(listen="0.0.0.0",
-                              port=int(os.environ.get("PORT", "8443")),
+                              port=PORT,
                               url_path=os.getenv("TG_BOT_TOKEN"))
         updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(os.getenv("HEROKU_APP_NAME"), os.getenv("TG_BOT_TOKEN")))
 else:
